@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventario de Activos Dinámico</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h1 class="title">MARGUERITE</h1>
+    <section class="container">
+        <h1>Inventario de Activos Dinámico</h1>
+        <form id="activoForm">
+            <div class="form-div">
+                <div class="input-container">
+                    <label for="codigo">Código:</label>
+                    <input type="text" id="codigo" name="codigo" required>
+                </div>
+                <div class="input-container">
+                    <label for="prefijo">Prefijo del Activo:</label>
+                    <input type="text" id="prefijo" name="prefijo" placeholder="Ejemplo: conf" required>
+                </div>
+            </div>
+            <div class="form-div">
+                <div class="input-container">
+                    <label for="valor">Valor:</label>
+                    <input type="number" id="valor" name="valor" min="1" required>
+                </div>
+                <div class="input-container">
+                    <label for="propietario">Propietario:</label>
+                    <input type="text" id="propietario" name="propietario" required>
+                </div>
+            </div>
+            <h4>Para la valoración del Activo se tiene en cuenta la siguiente tabla:</h4>
+            <div>
+                <div>
+                    <table id="tabla_valoracion">
+                        <thead>
+                            <tr class="header">
+                                <th colspan="3">Valoración de Activos</th>
+                            </tr>
+                            <tr class="header">
+                                <th>Descripción</th>
+                                <th>Abreviatura</th>
+                                <th>Rango Valor</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Muy alto</td>
+                                <td>MA</td>
+                                <td>v >= 20.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>Alto</td>
+                                <td>A</td>
+                                <td>10.000.000 <= v < 20.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>Medio</td>
+                                <td>M</td>
+                                <td>5.000.000 <= v < 10.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>Bajo</td>
+                                <td>B</td>
+                                <td>1.000.000 <= v < 5.000.000</td>
+                            </tr>
+                            <tr>
+                                <td>Muy bajo</td>
+                                <td>MB</td>
+                                <td>v < 1.000.000</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <h4>Dimensiones de Seguridad:</h4>
+            <div class="form-div">
+                <div>
+                    <div>
+                        <label for="dim_a">A:</label>
+                        <input type="number" min="1" max="5" id="dim_a" name="dim_a" required>
+                    </div>
+                    <div>
+                        <label for="dim_c">C:</label>
+                        <input type="number" min="1" max="5" id="dim_c" name="dim_c" required>
+                    </div>
+                    <div>
+                        <label for="dim_i">I:</label>
+                        <input type="number" min="1" max="5" id="dim_i" name="dim_i" required>
+                    </div>
+                    <div>
+                        <label for="dim_d">D:</label>
+                        <input type="number" min="1" max="5" id="dim_d" name="dim_d" required>
+                    </div>
+                    <div>
+                        <label for="dim_t">T:</label>
+                        <input type="number" min="1" max="5" id="dim_t" name="dim_t" required>
+                    </div>
+                </div>
+                <div>
+                    <table>
+                        <thead>
+                            <tr class="header">
+                                <th colspan="2">Dimensiones de Seguridad</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>A</td>
+                                <td>Autenticidad</td>
+                            </tr>
+                            <tr>
+                                <td>C</td>
+                                <td>Confidencialidad</td>
+                            </tr>
+                            <tr>
+                                <td>I</td>
+                                <td>Integridad</td>
+                            </tr>
+                            <tr>
+                                <td>D</td>
+                                <td>Disponibilidad</td>
+                            </tr>
+                            <tr>
+                                <td>T</td>
+                                <td>Trazabilidad (Seguimiento)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <button type="button" id="agregarActivo">Agregar Activo</button>
+        </form>
+
+        <table id="inventarioTabla">
+            <thead>
+                <tr class="header">
+                    <th colspan="12">Inventario de Activos</th>
+                </tr>
+                <tr class="header">
+                    <th colspan="6"></th>
+                    <th colspan="5">Dimensiones de Seguridad</th>
+                    <th colspan="1"></th>
+                </tr>
+                <tr>
+                    <th>Prefijo Tipo</th>
+                    <th>Tipo Activo</th>
+                    <th>Código</th>
+                    <th>Activo</th>
+                    <th>Valor</th>
+                    <th>Valoración</th>
+                    <th>A</th>
+                    <th>C</th>
+                    <th>I</th>
+                    <th>D</th>
+                    <th>T</th>
+                    <th>Propietario</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se pueden agregar filas dinámicamente -->
+            </tbody>
+        </table>
+    </section>
+    <section class="container">
+        <h1>Gestión de Amenazas</h1>
+        <form id="amenazaForm">
+            <div>
+                <label for="grupo">Grupo:</label>
+                <input type="text" id="grupo" name="grupo" placeholder="Ejemplo: Desastres naturales" required>
+                <label for="codigo_amenaza">Código:</label>
+                <input type="text" id="codigo_amenaza" name="codigo_amenaza" placeholder="Ejemplo: DN01" required>
+                <label for="amenaza">Amenaza:</label>
+                <input type="text" id="amenaza" name="amenaza" placeholder="Ejemplo: Terremoto" required>
+            </div>
+
+            <button type="button" id="agregarAmenaza">Agregar Amenaza</button>
+        </form>
+
+        <table id="amenazasTabla">
+            <thead>
+                <tr class="header">
+                    <th colspan="20">Gestión de Amenazas</th>
+                </tr>
+                <tr class="header">
+                    <th colspan="3"></th>
+                    <th colspan="5">Dimensiones afectadas</th>
+                    <th colspan="12">Activos afectados</th>
+                </tr>
+                <tr class="header">
+                    <th>Grupo</th>
+                    <th>Código</th>
+                    <th>Amenaza</th>
+                    <th>A</th>
+                    <th>C</th>
+                    <th>I</th>
+                    <th>D</th>
+                    <th>T</th>
+                    <th>essential</th>
+                    <th>D</th>
+                    <th>keys</th>
+                    <th>S</th>
+                    <th>arch</th>
+                    <th>SW</th>
+                    <th>HW</th>
+                    <th>Com</th>
+                    <th>Media</th>
+                    <th>AUX</th>
+                    <th>L</th>
+                    <th>P</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se agregarán dinámicamente las filas -->
+            </tbody>
+        </table>
+    </section>
+    <section class="container">
+        <h1>Análisis de Amenazas</h1>
+        <div class="tables-container">
+            <table id="vulnerabilidadTabla">
+                <thead>
+                    <tr class="header">
+                        <th colspan="4">Vulnerabilidad</th>
+                    </tr>
+                    <tr class="header">
+                        <th>Vulnerabilidad</th>
+                        <th>Abreviatura</th>
+                        <th>Frecuencia</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Frecuencia muy alta</td>
+                        <td>FMA</td>
+                        <td>1 vez al día</td>
+                        <td>1.000</td>
+                    </tr>
+                    <tr>
+                        <td>Frecuencia alta</td>
+                        <td>FA</td>
+                        <td>1 vez cada 2 semanas</td>
+                        <td>0.071</td>
+                    </tr>
+                    <tr>
+                        <td>Frecuencia media</td>
+                        <td>FM</td>
+                        <td>1 vez cada 2 meses</td>
+                        <td>0.016</td>
+                    </tr>
+                    <tr>
+                        <td>Frecuencia baja</td>
+                        <td>FB</td>
+                        <td>1 vez cada 6 meses</td>
+                        <td>0.005</td>
+                    </tr>
+                    <tr>
+                        <td>Frecuencia muy baja</td>
+                        <td>FMB</td>
+                        <td>1 vez al año</td>
+                        <td>0.003</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table id="impactoTabla">
+                <thead>
+                    <tr class="header">
+                        <th colspan="3">Degradación de activos (Impacto)</th>
+                    </tr>
+                    <tr class="header">
+                        <th>Descripción</th>
+                        <th>Impacto</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Critico</td>
+                        <td>C</td>
+                        <td>100%</td>
+                    </tr>
+                    <tr>
+                        <td>Alto</td>
+                        <td>A</td>
+                        <td>75%</td>
+                    </tr>
+                    <tr>
+                        <td>Medio</td>
+                        <td>M</td>
+                        <td>50%</td>
+                    </tr>
+                    <tr>
+                        <td>Bajo</td>
+                        <td>B</td>
+                        <td>25%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <table id="analisisTabla">
+            <thead>
+                <tr class="header">
+                    <th colspan="11">Análisis de amenazas (Riesgo intrínseco)</th>
+                </tr>
+                <tr class="header">
+                    <th colspan="6"></th>
+                    <th colspan="2">Vulnerabilidad</th>
+                    <th colspan="2">Impacto</th>
+                    <th></th>
+                </tr>
+                <tr class="header">
+                    <th>Código</th>
+                    <th>Activo</th>
+                    <th>Valoración</th>
+                    <th>Valor</th>
+                    <th>Código Amenaza</th>
+                    <th>Amenaza</th>
+                    <th>Valoración</th>
+                    <th>Valor</th>
+                    <th>Valoración</th>
+                    <th>Valor</th>
+                    <th>Riesgo Intrinseco</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Aquí se agregarán dinámicamente las filas -->
+            </tbody>
+        </table>
+    </section>
+    <script src="tipos_activos.js"></script>
+    <script src="index.js"></script>
+</body>
+
+</html>
